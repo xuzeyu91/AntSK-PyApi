@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  antsk-py-api:
+    image: antsk-py-api:latest
+    container_name: antsk-py-api
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_STORAGE_PATH=/app/models
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - LOG_LEVEL=INFO
+      - USE_FP16=true
+    volumes:
+      # 挂载模型存储目录到宿主机，避免每次重启容器都要重新下载模型
+      - ./models:/app/models
+      # 可选：挂载日志目录
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s 

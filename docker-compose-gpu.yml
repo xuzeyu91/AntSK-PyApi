@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  antsk-py-api:
+    image: registry.cn-hangzhou.aliyuncs.com/xuzeyu91/antsk-base:antsk-py-api-1.0
+    container_name: antsk-py-api
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_STORAGE_PATH=/app/models
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - LOG_LEVEL=INFO
+      - USE_FP16=true
+    volumes:
+      - ./models:/app/models
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
