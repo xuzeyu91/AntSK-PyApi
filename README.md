@@ -30,7 +30,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 ```json
 {
-    "model": "modelname",
+    "model": "BAAI/bge-m3",
     "input": ["你好", "你"]
 }
 ```
