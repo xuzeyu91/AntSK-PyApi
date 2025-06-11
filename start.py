@@ -15,6 +15,7 @@ def main():
     print(f"🔍 健康检查: http://{API_HOST}:{API_PORT}/health")
     print(f"📋 模型列表: http://{API_HOST}:{API_PORT}/models")
     print(f"⚡ 嵌入接口: POST http://{API_HOST}:{API_PORT}/v1/embeddings")
+    print(f"⚡ 重排接口: POST http://{API_HOST}:{API_PORT}/v1/rerank")
     print("-" * 50)
     
     try:
