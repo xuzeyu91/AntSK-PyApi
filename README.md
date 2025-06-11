@@ -1,4 +1,4 @@
-# Embedding API
+# Embedding/Rerank API
 
 基于FastAPI的文本嵌入向量生成API，支持多种embedding模型。
 
