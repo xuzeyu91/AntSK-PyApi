@@ -1,4 +1,4 @@
-# AntSK Python Embedding API
+# AntSK PyAPI
 
 🚀 基于FastAPI、FlagEmbedding的高性能文本嵌入向量生成与文档重排序API，支持多种embedding和rerank模型。
 
