@@ -1,5 +1,5 @@
 """
-Embedding API 配置文件
+AntSK-PyApi API 配置文件
 """
 import os
 
