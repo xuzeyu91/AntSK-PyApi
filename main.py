@@ -309,7 +309,6 @@ async def create_rerank(request: RerankRequest):
             logger.info(f"处理结果 - 排序位置: {rank_index}, 原始索引: {original_index}, 分数: {score}")
             result = RerankResult(
                 index=original_index,  # 原始文档索引
-                document_index=original_index,  # 原始文档索引
                 relevance_score=float(score)
             )
             
