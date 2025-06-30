@@ -68,8 +68,7 @@ class RerankDocument(BaseModel):
 
 class RerankResult(BaseModel):
     document: RerankDocument = None
-    index: int  # 排序后的连续位置（0,1,2,3...）
-    document_index: int  # 原始文档在输入列表中的索引位置
+    index: int  # 原始文档在输入列表中的索引位置
     relevance_score: float
 
 class RerankTokens(BaseModel):
@@ -309,7 +308,7 @@ async def create_rerank(request: RerankRequest):
         for rank_index, (original_index, score) in enumerate(results_with_index):
             logger.info(f"处理结果 - 排序位置: {rank_index}, 原始索引: {original_index}, 分数: {score}")
             result = RerankResult(
-                index=rank_index,  # 连续的排序位置
+                index=original_index,  # 原始文档索引
                 document_index=original_index,  # 原始文档索引
                 relevance_score=float(score)
             )
