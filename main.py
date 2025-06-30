@@ -13,7 +13,7 @@ from config import MODEL_STORAGE_PATH, DEFAULT_USE_FP16, LOG_LEVEL
 logging.basicConfig(level=getattr(logging, LOG_LEVEL.upper()))
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Embedding API", version="1.0.0")
+app = FastAPI(title="AntSK-PyAPI", version="1.0.0")
 
 # 全局异常处理器
 @app.exception_handler(ValidationError)
@@ -68,7 +68,8 @@ class RerankDocument(BaseModel):
 
 class RerankResult(BaseModel):
     document: RerankDocument = None
-    index: int
+    index: int  # 排序后的连续位置（0,1,2,3...）
+    document_index: int  # 原始文档在输入列表中的索引位置
     relevance_score: float
 
 class RerankTokens(BaseModel):
@@ -305,10 +306,11 @@ async def create_rerank(request: RerankRequest):
         
         # 构建响应结果
         results = []
-        for original_index, score in results_with_index:
-            logger.info(f"处理结果 - 索引: {original_index}, 分数: {score}")
+        for rank_index, (original_index, score) in enumerate(results_with_index):
+            logger.info(f"处理结果 - 排序位置: {rank_index}, 原始索引: {original_index}, 分数: {score}")
             result = RerankResult(
-                index=original_index,
+                index=rank_index,  # 连续的排序位置
+                document_index=original_index,  # 原始文档索引
                 relevance_score=float(score)
             )
             
