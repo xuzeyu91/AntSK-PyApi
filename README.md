@@ -1,4 +1,4 @@
-# AntSK Python Embedding API
+# AntSK PyAPI
 
 🚀 基于FastAPI、FlagEmbedding的高性能文本嵌入向量生成与文档重排序API，支持多种embedding和rerank模型。
 
@@ -169,7 +169,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 **GET** `/config`
 ```json
 {
-    "model_storage_path": "D:\\git\\AntBlazor\\model",
+    "model_storage_path": "D:\\git\\AntSK\\model",
     "api_host": "0.0.0.0",
     "api_port": 8000,
     "log_level": "INFO",
@@ -183,7 +183,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 | 环境变量 | 默认值 | 说明 |
 |---------|--------|------|
-| `MODEL_STORAGE_PATH` | `D:\git\AntBlazor\model` | 模型存储路径 |
+| `MODEL_STORAGE_PATH` | `D:\git\AntSK\model` | 模型存储路径 |
 | `API_HOST` | `0.0.0.0` | API服务监听地址 |
 | `API_PORT` | `8000` | API服务端口 |
 | `LOG_LEVEL` | `INFO` | 日志级别（DEBUG/INFO/WARNING/ERROR） |
