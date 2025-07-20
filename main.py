@@ -4,6 +4,7 @@ from pydantic import BaseModel, ValidationError
 from typing import List, Dict, Any
 import os
 import logging
+import base64
 import FlagEmbedding
 from modelscope.hub.snapshot_download import snapshot_download
 import numpy as np
@@ -45,6 +46,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 class EmbeddingRequest(BaseModel):
     model: str
     input: List[str]
+    encoding_format: str = "float"  # 新增参数，默认为float，支持base64
 
 # rerank请求模型
 class RerankRequest(BaseModel):
@@ -60,7 +62,7 @@ class RerankRequest(BaseModel):
 class EmbeddingData(BaseModel):
     object: str = "embedding"
     index: int
-    embedding: List[float]
+    embedding: Any  # 支持List[float]或str（base64编码）
 
 # rerank响应模型
 class RerankDocument(BaseModel):
@@ -191,6 +193,10 @@ async def create_embeddings(request: EmbeddingRequest):
         if all(not text.strip() for text in request.input):
             raise HTTPException(status_code=400, detail="输入文本不能全部为空")
         
+        # 验证encoding_format参数
+        if request.encoding_format not in ["float", "base64"]:
+            raise HTTPException(status_code=400, detail="encoding_format参数必须是'float'或'base64'")
+        
         # 加载模型
         model = load_model(request.model)
         
@@ -208,10 +214,21 @@ async def create_embeddings(request: EmbeddingRequest):
         # 构建响应数据
         data = []
         for i, embedding in enumerate(embeddings):
-            data.append(EmbeddingData(
-                index=i,
-                embedding=embedding.tolist()
-            ))
+            if request.encoding_format == "base64":
+                # base64编码
+                # 将numpy数组转换为bytes，然后进行base64编码
+                embedding_bytes = embedding.astype(np.float32).tobytes()
+                embedding_b64 = base64.b64encode(embedding_bytes).decode('utf-8')
+                data.append(EmbeddingData(
+                    index=i,
+                    embedding=embedding_b64
+                ))
+            else:
+                # float格式（默认）
+                data.append(EmbeddingData(
+                    index=i,
+                    embedding=embedding.tolist()
+                ))
         
         # 计算token使用量
         prompt_tokens = count_tokens(request.input)
