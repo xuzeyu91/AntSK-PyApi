@@ -528,7 +528,7 @@ docker-compose restart
 ### 开发环境设置
 ```bash
 # 克隆项目
-git clone <repository-url>
+git clone https://github.com/xuzeyu91/AntSK-PyApi
 cd AntSK-PyApi
 
 # 安装依赖
