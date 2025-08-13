@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 from pydantic import BaseModel, ValidationError
 from typing import List, Dict, Any
 import os
@@ -363,10 +363,18 @@ async def create_rerank(request: RerankRequest):
         logger.error(f"重排序时出错: {e}")
         raise HTTPException(status_code=500, detail=f"重排序失败: {str(e)}")
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 async def root():
-    """根路径"""
-    return {"message": "Embedding API is running"}
+    """根路径 - 返回可视化页面"""
+    try:
+        with open("index.html", "r", encoding="utf-8") as f:
+            html_content = f.read()
+        return HTMLResponse(content=html_content, status_code=200)
+    except FileNotFoundError:
+        return HTMLResponse(
+            content="<h1>AntSK PyAPI</h1><p>可视化页面文件未找到，请确保 index.html 文件存在。</p><p><a href='/docs'>访问 API 文档</a></p>",
+            status_code=200
+        )
 
 @app.get("/health")
 async def health_check():
@@ -390,4 +398,4 @@ async def get_config():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000) 
+    uvicorn.run(app, host="0.0.0.0", port=8000)
