@@ -376,6 +376,19 @@ async def root():
             status_code=200
         )
 
+@app.get("/features.html", response_class=HTMLResponse)
+async def features():
+    """功能介绍页面"""
+    try:
+        with open("features.html", "r", encoding="utf-8") as f:
+            html_content = f.read()
+        return HTMLResponse(content=html_content, status_code=200)
+    except FileNotFoundError:
+        return HTMLResponse(
+            content="<h1>功能介绍</h1><p>功能介绍页面文件未找到，请确保 features.html 文件存在。</p><p><a href='/'>返回首页</a></p>",
+            status_code=200
+        )
+
 @app.get("/health")
 async def health_check():
     """健康检查"""

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>功能介绍 - AntSK PyAPI</title>
+    
+    <!-- SEO 元标签 -->
+    <meta name="description" content="AntSK PyAPI功能介绍：文本嵌入向量生成、文档重排序、支持的模型、配置说明等详细功能说明。">
+    <meta name="keywords" content="AntSK,PyAPI,功能介绍,文本嵌入,向量生成,文档重排序,模型支持">
+    <meta name="author" content="AntSK Team">
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-color: #f8f9ff;
+            --accent-color: #7F7FFF;
+            --text-color: #333;
+            --text-light: #666;
+            --background: #ffffff;
+            --surface: rgba(255, 255, 255, 0.95);
+            --border: #e0e6ff;
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 25px 50px rgba(102, 126, 234, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #f8f9ff 0%, #e6f3ff 50%, #f0f4ff 100%);
+            min-height: 100vh;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .cta-button {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        /* 功能特色网格 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .feature-description {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* 模型网格 */
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .model-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e6f3ff 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .model-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .model-card h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .model-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* 配置表格 */
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .config-table th,
+        .config-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .config-table th {
+            background: var(--secondary-color);
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .config-table code {
+            background: #f1f5f9;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+        }
+
+        /* API演示样式 */
+        .api-demo {
+            margin: 2rem 0;
+        }
+
+        .api-demo h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .endpoint {
+            display: inline-block;
+            background: var(--surface);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            margin: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .endpoint:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .method {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 0.75rem;
+        }
+
+        .loading {
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🐜</span>
+                <span class="logo-text">AntSK PyAPI</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">首页</a></li>
+                <li><a href="features.html" class="active">功能介绍</a></li>
+                <li><a href="/#how-it-works">使用流程</a></li>
+                <li><a href="/#advantages">产品优势</a></li>
+            </ul>
+            <a href="http://localhost:8000/docs" class="cta-button">API文档</a>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="main-content">
+        <div class="container">
+            <!-- 页面标题 -->
+            <div class="page-header">
+                <h1 class="page-title">功能介绍</h1>
+                <p class="page-subtitle">详细了解AntSK PyAPI的核心功能、支持的模型和配置选项</p>
+            </div>
+
+            <!-- 核心功能特色 -->
+            <div class="card">
+                <h2>🚀 核心功能特色</h2>
+                <p style="color: var(--text-light); margin-bottom: 2rem;">强大的文本嵌入向量生成和文档重排序能力，为AI应用提供高性能支持</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔤</div>
+                        <h3 class="feature-title">文本嵌入向量生成</h3>
+                        <p class="feature-description">支持多种BGE系列embedding模型，生成高质量的文本向量表示</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3 class="feature-title">文档重排序</h3>
+                        <p class="feature-description">基于先进的rerank模型，对文档进行智能重排序，提升检索精度</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔌</div>
+                        <h3 class="feature-title">OpenAI兼容API</h3>
+                        <p class="feature-description">完全兼容OpenAI API格式，无缝集成到现有应用中</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API接口服务 -->
+            <div class="card">
+                <h2>📚 API接口服务</h2>
+                
+                <div class="api-demo">
+                    <h3>🔗 Swagger API 文档</h3>
+                    <div style="margin: 20px 0;">
+                        <a href="/docs" target="_blank" class="endpoint" style="text-decoration: none; display: inline-block;">
+                            <span class="method">GET</span>/docs - 交互式API文档
+                        </a>
+                    </div>
+                    <div style="margin: 20px 0;">
+                        <a href="/redoc" target="_blank" class="endpoint" style="text-decoration: none; display: inline-block;">
+                            <span class="method">GET</span>/redoc - ReDoc API文档
+                        </a>
+                    </div>
+                </div>
+
+                <div class="api-demo">
+                    <h3>🔍 服务状态</h3>
+                    <div id="service-status" style="margin: 20px 0;">
+                        <div class="loading">正在检查服务状态...</div>
+                    </div>
+                </div>
+
+                <div class="api-demo">
+                    <h3>🤖 已加载模型</h3>
+                    <div id="loaded-models" style="margin: 20px 0;">
+                        <div class="loading">正在获取模型列表...</div>
+                    </div>
+                </div>
+
+                <div class="api-demo">
+                    <h3>⚙️ 服务配置</h3>
+                    <div id="service-config" style="margin: 20px 0;">
+                        <div class="loading">正在获取配置信息...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 支持的模型 -->
+            <div class="card">
+                <h2>🤖 支持的模型</h2>
+                
+                <h3 style="margin-top: 30px; color: #4a5568;">Embedding模型</h3>
+                <div class="model-grid">
+                    <div class="model-card">
+                        <h4>BAAI/bge-large-zh-v1.5</h4>
+                        <p>中文大型模型（推荐）</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>BAAI/bge-base-zh-v1.5</h4>
+                        <p>中文基础模型</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>BAAI/bge-small-zh-v1.5</h4>
+                        <p>中文小型模型</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>BAAI/bge-m3</h4>
+                        <p>多语言模型</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; color: #4a5568;">Rerank模型</h3>
+                <div class="model-grid">
+                    <div class="model-card">
+                        <h4>BAAI/bge-reranker-v2-m3</h4>
+                        <p>多语言重排序模型（推荐）</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>BAAI/bge-reranker-base</h4>
+                        <p>基础重排序模型</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>BAAI/bge-reranker-large</h4>
+                        <p>大型重排序模型</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 配置说明 -->
+            <div class="card">
+                <h2>⚙️ 配置说明</h2>
+                <table class="config-table">
+                    <thead>
+                        <tr>
+                            <th>环境变量</th>
+                            <th>默认值</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>MODEL_STORAGE_PATH</code></td>
+                            <td>D:\git\AntSK\model</td>
+                            <td>模型存储路径</td>
+                        </tr>
+                        <tr>
+                            <td><code>API_HOST</code></td>
+                            <td>0.0.0.0</td>
+                            <td>API服务监听地址</td>
+                        </tr>
+                        <tr>
+                            <td><code>API_PORT</code></td>
+                            <td>8000</td>
+                            <td>API服务端口</td>
+                        </tr>
+                        <tr>
+                            <td><code>LOG_LEVEL</code></td>
+                            <td>INFO</td>
+                            <td>日志级别</td>
+                        </tr>
+                        <tr>
+                            <td><code>USE_FP16</code></td>
+                            <td>true</td>
+                            <td>是否使用FP16精度（节省内存）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 关于 AntSK -->
+            <div class="card">
+                <h2>🏢 关于 AntSK</h2>
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <a href="https://antsk.cn" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 30px; border-radius: 25px; text-decoration: none; font-size: 1.2rem; font-weight: bold; margin: 10px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        🌐 访问 AntSK 官网
+                    </a>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3>🚀 AntSK 企业级AI解决方案</h3>
+                        <p>AntSK 是基于大模型技术的一体化AI解决方案，提供精准知识检索、持续学习能力和流畅的智能交互体验，助力企业打造专属AI一体机。</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🧠 核心技术优势</h3>
+                        <p>基于 .NET 9 + Blazor + Semantic Kernel 构建，集成 Kernel Memory，支持多种大模型的集成与离线运行，兼容国产大模型和数据库。</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>💼 企业应用场景</h3>
+                        <p>适用于企业知识库、智能客服、教育辅助系统、研发创新助手等多种场景，提升工作效率和用户体验。</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🔧 完整生态系统</h3>
+                        <p>提供知识库管理、GPTs生成、API接口、插件系统、Text2SQL等完整功能，满足企业级AI应用需求。</p>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; padding: 25px; border-radius: 15px; margin-top: 30px; text-align: center;">
+                    <h3 style="color: white; margin-bottom: 15px;">🎯 为什么选择 AntSK？</h3>
+                    <p style="font-size: 1.1rem; margin-bottom: 20px;">本 PyAPI 项目是 AntSK 生态系统的重要组成部分，专门为 AntSK 主平台提供高性能的文本嵌入向量生成和文档重排序服务。</p>
+                    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-top: 20px;">
+                        <div style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 20px;">✅ 开源免费</div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 20px;">🔒 数据安全</div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 20px;">🚀 高性能</div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 20px;">🛠️ 易部署</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 动态加载API状态信息
+        async function loadApiStatus() {
+            try {
+                // 检查服务状态
+                const healthResponse = await fetch('/health');
+                const healthData = await healthResponse.json();
+                document.getElementById('service-status').innerHTML = `
+                    <div style="color: #48bb78; font-weight: 600;">✅ 服务运行正常</div>
+                    <div style="margin-top: 10px; color: var(--text-light);">状态: ${healthData.status}</div>
+                `;
+            } catch (error) {
+                document.getElementById('service-status').innerHTML = `
+                    <div style="color: #e53e3e; font-weight: 600;">❌ 服务连接失败</div>
+                    <div style="margin-top: 10px; color: var(--text-light);">请检查服务是否启动</div>
+                `;
+            }
+
+            try {
+                // 获取模型列表
+                const modelsResponse = await fetch('/models');
+                const modelsData = await modelsResponse.json();
+                const modelsList = modelsData.data.map(model => `
+                    <div style="background: var(--surface); padding: 10px 15px; border-radius: 8px; margin: 5px 0; border: 1px solid var(--border);">
+                        <strong>${model.id}</strong>
+                    </div>
+                `).join('');
+                document.getElementById('loaded-models').innerHTML = modelsList;
+            } catch (error) {
+                document.getElementById('loaded-models').innerHTML = `
+                    <div style="color: var(--text-light);">无法获取模型列表</div>
+                `;
+            }
+
+            try {
+                // 获取配置信息
+                const configResponse = await fetch('/config');
+                const configData = await configResponse.json();
+                const configInfo = Object.entries(configData).map(([key, value]) => `
+                    <div style="background: var(--surface); padding: 10px 15px; border-radius: 8px; margin: 5px 0; border: 1px solid var(--border);">
+                        <strong>${key}:</strong> ${value}
+                    </div>
+                `).join('');
+                document.getElementById('service-config').innerHTML = configInfo;
+            } catch (error) {
+                document.getElementById('service-config').innerHTML = `
+                    <div style="color: var(--text-light);">无法获取配置信息</div>
+                `;
+            }
+        }
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', loadApiStatus);
+    </script>
+</body>
+</html>
