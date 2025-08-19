@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   antsk-py-api:
-    image: registry.cn-hangzhou.aliyuncs.com/xuzeyu91/antsk-base:antsk-py-api-1.0.2
+    image: registry.cn-hangzhou.aliyuncs.com/xuzeyu91/antsk-base:antsk-py-api-1.0.3
     container_name: antsk-py-api
     ports:
       - "8000:8000"
