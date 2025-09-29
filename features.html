@@ -309,6 +309,123 @@
             font-style: italic;
         }
 
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .test-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .test-card h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #ffffff;
+            font-size: 0.95rem;
+            color: var(--text-color);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .form-hint {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .form-checkbox {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .form-checkbox input {
+            width: 16px;
+            height: 16px;
+        }
+
+        .run-button {
+            align-self: flex-start;
+            background: var(--primary-gradient);
+            color: #ffffff;
+            border: none;
+            border-radius: 999px;
+            padding: 0.75rem 1.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .run-button:hover:not([disabled]) {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.25);
+        }
+
+        .run-button[disabled] {
+            opacity: 0.7;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .result-box {
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            border-radius: 12px;
+            padding: 1rem;
+            max-height: 240px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
         /* 响应式设计 */
         @media (max-width: 768px) {
             .nav-container {
@@ -329,6 +446,14 @@
 
             .card {
                 padding: 1.5rem;
+            }
+
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-box {
+                max-height: 320px;
             }
         }
 
@@ -390,42 +515,75 @@
                 </div>
             </div>
 
-            <!-- API接口服务 -->
             <div class="card">
-                <h2>📚 API接口服务</h2>
-                
                 <div class="api-demo">
-                    <h3>🔗 Swagger API 文档</h3>
-                    <div style="margin: 20px 0;">
-                        <a href="/docs" target="_blank" class="endpoint" style="text-decoration: none; display: inline-block;">
-                            <span class="method">GET</span>/docs - 交互式API文档
-                        </a>
-                    </div>
-                    <div style="margin: 20px 0;">
-                        <a href="/redoc" target="_blank" class="endpoint" style="text-decoration: none; display: inline-block;">
-                            <span class="method">GET</span>/redoc - ReDoc API文档
-                        </a>
-                    </div>
-                </div>
+                    <h3>🧪 在线测试</h3>
+                    <p class="form-hint">无需额外工具，直接调用 API 体验文本向量生成与文档重排序能力。</p>
+                    <div class="test-grid">
+                        <div class="test-card">
+                            <h4>文本嵌入测试</h4>
+                            <form id="embedding-form" class="test-form">
+                                <div class="form-group">
+                                    <label for="embedding-model">选择模型</label>
+                                    <select id="embedding-model" class="form-select">
+                                        <option value="BAAI/bge-base-zh-v1.5">BAAI/bge-base-zh-v1.5</option>
+                                        <option value="BAAI/bge-small-zh-v1.5">BAAI/bge-small-zh-v1.5</option>
+                                        <option value="BAAI/bge-large-zh-v1.5">BAAI/bge-large-zh-v1.5</option>
+                                        <option value="BAAI/bge-m3">BAAI/bge-m3</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="embedding-input">输入文本（每行一个样本）</label>
+                                    <textarea id="embedding-input" class="form-textarea" placeholder="请输入需要生成向量的文本">AntSK PyAPI 提供高性能中文向量服务
+AntSK 生态为企业提供端到端大模型能力</textarea>
+                                    <span class="form-hint">支持批量输入，将自动拆分为多条记录。</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="embedding-format">编码格式</label>
+                                    <select id="embedding-format" class="form-select">
+                                        <option value="float" selected>float（默认，便于调试）</option>
+                                        <option value="base64">base64（更小的传输体积）</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="run-button">生成向量</button>
+                                <pre class="result-box" id="embedding-result">等待测试...</pre>
+                            </form>
+                        </div>
 
-                <div class="api-demo">
-                    <h3>🔍 服务状态</h3>
-                    <div id="service-status" style="margin: 20px 0;">
-                        <div class="loading">正在检查服务状态...</div>
-                    </div>
-                </div>
-
-                <div class="api-demo">
-                    <h3>🤖 已加载模型</h3>
-                    <div id="loaded-models" style="margin: 20px 0;">
-                        <div class="loading">正在获取模型列表...</div>
-                    </div>
-                </div>
-
-                <div class="api-demo">
-                    <h3>⚙️ 服务配置</h3>
-                    <div id="service-config" style="margin: 20px 0;">
-                        <div class="loading">正在获取配置信息...</div>
+                        <div class="test-card">
+                            <h4>文档重排序测试</h4>
+                            <form id="rerank-form" class="test-form">
+                                <div class="form-group">
+                                    <label for="rerank-model">选择模型</label>
+                                    <select id="rerank-model" class="form-select">
+                                        <option value="BAAI/bge-reranker-v2-m3">BAAI/bge-reranker-v2-m3</option>
+                                        <option value="BAAI/bge-reranker-base">BAAI/bge-reranker-base</option>
+                                        <option value="BAAI/bge-reranker-large">BAAI/bge-reranker-large</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rerank-query">查询语句</label>
+                                    <input id="rerank-query" class="form-input" type="text" value="AntSK PyAPI 支持哪些模型？" placeholder="请输入查询内容">
+                                </div>
+                                <div class="form-group">
+                                    <label for="rerank-docs">候选文档（每行一个）</label>
+                                    <textarea id="rerank-docs" class="form-textarea">AntSK PyAPI 支持 FlagEmbedding 系列的 embedding 和 rerank 模型。
+平台提供 OpenAI 兼容接口，便于快速集成。
+服务提供健康检查、模型列表和配置查看等管理能力。</textarea>
+                                    <span class="form-hint">系统将自动计算查询与每条文档的相关度分数。</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rerank-topn">返回结果数量（可选）</label>
+                                    <input id="rerank-topn" class="form-input" type="number" min="1" placeholder="默认返回全部结果">
+                                </div>
+                                <label class="form-checkbox">
+                                    <input id="rerank-return-docs" type="checkbox">
+                                    <span>返回文档原文</span>
+                                </label>
+                                <button type="submit" class="run-button">开始重排序</button>
+                                <pre class="result-box" id="rerank-result">等待测试...</pre>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -570,56 +728,221 @@
 
         // 动态加载API状态信息
         async function loadApiStatus() {
+            const statusContainer = document.getElementById('service-status');
+            const modelsContainer = document.getElementById('loaded-models');
+            const configContainer = document.getElementById('service-config');
+
+            if (!statusContainer || !modelsContainer || !configContainer) {
+                return;
+            }
+
             try {
-                // 检查服务状态
                 const healthResponse = await fetch('/health');
                 const healthData = await healthResponse.json();
-                document.getElementById('service-status').innerHTML = `
+                statusContainer.innerHTML = `
                     <div style="color: #48bb78; font-weight: 600;">✅ 服务运行正常</div>
                     <div style="margin-top: 10px; color: var(--text-light);">状态: ${healthData.status}</div>
                 `;
             } catch (error) {
-                document.getElementById('service-status').innerHTML = `
+                statusContainer.innerHTML = `
                     <div style="color: #e53e3e; font-weight: 600;">❌ 服务连接失败</div>
                     <div style="margin-top: 10px; color: var(--text-light);">请检查服务是否启动</div>
                 `;
             }
 
             try {
-                // 获取模型列表
                 const modelsResponse = await fetch('/models');
                 const modelsData = await modelsResponse.json();
-                const modelsList = modelsData.data.map(model => `
-                    <div style="background: var(--surface); padding: 10px 15px; border-radius: 8px; margin: 5px 0; border: 1px solid var(--border);">
-                        <strong>${model.id}</strong>
-                    </div>
-                `).join('');
-                document.getElementById('loaded-models').innerHTML = modelsList;
+                const modelsRaw = Array.isArray(modelsData.loaded_models)
+                    ? modelsData.loaded_models
+                    : Array.isArray(modelsData.data)
+                        ? modelsData.data
+                        : [];
+
+                if (modelsRaw.length === 0) {
+                    modelsContainer.innerHTML = `
+                        <div style="color: var(--text-light);">暂未加载模型</div>
+                    `;
+                } else {
+                    const modelsList = modelsRaw.map(model => {
+                        const name = typeof model === 'string' ? model : (model.id ?? model.name ?? '未命名模型');
+                        return `
+                            <div style="background: var(--surface); padding: 10px 15px; border-radius: 8px; margin: 5px 0; border: 1px solid var(--border);">
+                                <strong>${name}</strong>
+                            </div>
+                        `;
+                    }).join('');
+                    modelsContainer.innerHTML = modelsList;
+                }
             } catch (error) {
-                document.getElementById('loaded-models').innerHTML = `
+                modelsContainer.innerHTML = `
                     <div style="color: var(--text-light);">无法获取模型列表</div>
                 `;
             }
 
             try {
-                // 获取配置信息
                 const configResponse = await fetch('/config');
                 const configData = await configResponse.json();
-                const configInfo = Object.entries(configData).map(([key, value]) => `
-                    <div style="background: var(--surface); padding: 10px 15px; border-radius: 8px; margin: 5px 0; border: 1px solid var(--border);">
-                        <strong>${key}:</strong> ${value}
-                    </div>
-                `).join('');
-                document.getElementById('service-config').innerHTML = configInfo;
+                const entries = Object.entries(configData || {});
+
+                if (entries.length === 0) {
+                    configContainer.innerHTML = `
+                        <div style="color: var(--text-light);">未获取到配置信息</div>
+                    `;
+                } else {
+                    const configInfo = entries.map(([key, value]) => `
+                        <div style="background: var(--surface); padding: 10px 15px; border-radius: 8px; margin: 5px 0; border: 1px solid var(--border);">
+                            <strong>${key}:</strong> ${value}
+                        </div>
+                    `).join('');
+                    configContainer.innerHTML = configInfo;
+                }
             } catch (error) {
-                document.getElementById('service-config').innerHTML = `
+                configContainer.innerHTML = `
                     <div style="color: var(--text-light);">无法获取配置信息</div>
                 `;
             }
         }
 
+        function setupOnlineTests() {
+            const embeddingForm = document.getElementById('embedding-form');
+            const rerankForm = document.getElementById('rerank-form');
+
+            if (embeddingForm) {
+                embeddingForm.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    const model = (document.getElementById('embedding-model')?.value || '').trim();
+                    const rawInput = document.getElementById('embedding-input')?.value || '';
+                    const format = document.getElementById('embedding-format')?.value || 'float';
+                    const resultBox = document.getElementById('embedding-result');
+                    const submitButton = embeddingForm.querySelector('button[type="submit"]');
+
+                    if (!resultBox || !submitButton) {
+                        return;
+                    }
+
+                    const inputs = rawInput
+                        .split('\n')
+                        .map(line => line.trim())
+                        .filter(Boolean);
+
+                    if (inputs.length === 0) {
+                        resultBox.textContent = '请输入需要生成向量的文本。';
+                        return;
+                    }
+
+                    submitButton.disabled = true;
+                    resultBox.textContent = '正在请求嵌入向量...';
+
+                    try {
+                        const response = await fetch('/v1/embeddings', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                model: model || 'BAAI/bge-base-zh-v1.5',
+                                input: inputs,
+                                encoding_format: format
+                            })
+                        });
+
+                        const responseText = await response.text();
+                        const data = responseText ? JSON.parse(responseText) : {};
+
+                        if (!response.ok) {
+                            const message = data.detail || response.statusText || '请求失败';
+                            throw new Error(message);
+                        }
+
+                        resultBox.textContent = JSON.stringify(data, null, 2);
+                    } catch (error) {
+                        resultBox.textContent = `错误: ${error.message}`;
+                    } finally {
+                        submitButton.disabled = false;
+                    }
+                });
+            }
+
+            if (rerankForm) {
+                rerankForm.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    const model = (document.getElementById('rerank-model')?.value || '').trim();
+                    const query = (document.getElementById('rerank-query')?.value || '').trim();
+                    const rawDocs = document.getElementById('rerank-docs')?.value || '';
+                    const topNValue = (document.getElementById('rerank-topn')?.value || '').trim();
+                    const returnDocs = document.getElementById('rerank-return-docs')?.checked || false;
+                    const resultBox = document.getElementById('rerank-result');
+                    const submitButton = rerankForm.querySelector('button[type="submit"]');
+
+                    if (!resultBox || !submitButton) {
+                        return;
+                    }
+
+                    const documents = rawDocs
+                        .split('\n')
+                        .map(line => line.trim())
+                        .filter(Boolean);
+
+                    if (!query) {
+                        resultBox.textContent = '请输入查询语句。';
+                        return;
+                    }
+
+                    if (documents.length === 0) {
+                        resultBox.textContent = '请至少提供一个候选文档。';
+                        return;
+                    }
+
+                    submitButton.disabled = true;
+                    resultBox.textContent = '正在请求重排序结果...';
+
+                    const payload = {
+                        model: model || 'BAAI/bge-reranker-v2-m3',
+                        query,
+                        documents,
+                        return_documents: returnDocs
+                    };
+
+                    if (topNValue) {
+                        const parsed = parseInt(topNValue, 10);
+                        if (!Number.isNaN(parsed) && parsed > 0) {
+                            payload.top_n = parsed;
+                        }
+                    }
+
+                    try {
+                        const response = await fetch('/v1/rerank', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(payload)
+                        });
+
+                        const responseText = await response.text();
+                        const data = responseText ? JSON.parse(responseText) : {};
+
+                        if (!response.ok) {
+                            const message = data.detail || response.statusText || '请求失败';
+                            throw new Error(message);
+                        }
+
+                        resultBox.textContent = JSON.stringify(data, null, 2);
+                    } catch (error) {
+                        resultBox.textContent = `错误: ${error.message}`;
+                    } finally {
+                        submitButton.disabled = false;
+                    }
+                });
+            }
+        }
+
         // 页面加载完成后执行
-        document.addEventListener('DOMContentLoaded', loadApiStatus);
+        document.addEventListener('DOMContentLoaded', () => {
+            loadApiStatus();
+            setupOnlineTests();
+        });
     </script>
 </body>
 </html>
