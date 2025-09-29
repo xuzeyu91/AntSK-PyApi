@@ -393,6 +393,30 @@ docker-compose restart
 | `API_PORT` | `8000` | API服务端口 |
 | `LOG_LEVEL` | `INFO` | 日志级别 |
 | `USE_FP16` | `true` | 是否使用FP16精度 |
+| `GPU_VISIBLE_DEVICES` | `auto` | GPU可见策略：`auto` 自动挑选空闲GPU，`none` 禁用GPU，或指定如 `0,1` |
+| `GPU_COUNT` | `1` | 申请的GPU数量，避免一次占满全部GPU，可设为 `0` 回退CPU |
+
+> 💡 建议将仓库中的 `.env.example` 拷贝为 `.env` 并按需修改，`docker compose` 会自动加载其中的变量。
+
+### 🤖 GPU 自适应部署
+
+在部署 `docker-compose-gpu.yml` 时，可通过以下步骤实现与其他服务的GPU资源自适应：
+
+1. 复制示例环境变量文件：
+    ```powershell
+    Copy-Item .env.example .env
+    ```
+2. 根据实际环境修改 `.env` 中的 GPU 相关字段：
+    - `GPU_VISIBLE_DEVICES=auto`（默认）由 NVIDIA Runtime 选择当前空闲 GPU；
+    - 若没有可用 GPU 或希望临时禁用，可设为 `none` 并将 `GPU_COUNT=0`；
+    - 如需绑定指定 GPU，可设置为 `0`、`1` 或 `0,2` 等编号；
+    - 调整 `GPU_COUNT` 为需要预留的 GPU 数量，避免一次获取全部 GPU。
+3. 启动服务时使用兼容模式以启用资源限制：
+    ```powershell
+    docker compose --env-file .env --compatibility -f docker-compose-gpu.yml up -d
+    ```
+
+当 GPU 被其他服务占用时，`auto` 会优先选择剩余空闲的 GPU；若所有 GPU 均繁忙，可手动改为 `none` 让服务回退到 CPU 运行，避免部署失败。
 
 ### 📁 数据卷挂载
 

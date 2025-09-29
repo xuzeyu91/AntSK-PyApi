@@ -12,6 +12,8 @@ services:
       - API_PORT=8000
       - LOG_LEVEL=INFO
       - USE_FP16=true
+      - NVIDIA_VISIBLE_DEVICES=auto
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
     volumes:
       - ./models:/app/models
       - ./logs:/app/logs
@@ -27,5 +29,5 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              count: all
+              count: 1
               capabilities: [gpu]
