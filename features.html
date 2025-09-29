@@ -526,10 +526,16 @@
                                 <div class="form-group">
                                     <label for="embedding-model">选择模型</label>
                                     <select id="embedding-model" class="form-select">
+                                        <option value="BAAI/bge-m3">BAAI/bge-m3（多语言推荐）</option>
+                                        <option value="BAAI/bge-en-icl">BAAI/bge-en-icl</option>
+                                        <option value="BAAI/bge-multilingual-gemma2">BAAI/bge-multilingual-gemma2</option>
+                                        <option value="BAAI/llm-embedder">BAAI/llm-embedder</option>
+                                        <option value="BAAI/bge-large-en-v1.5">BAAI/bge-large-en-v1.5</option>
+                                        <option value="BAAI/bge-base-en-v1.5">BAAI/bge-base-en-v1.5</option>
+                                        <option value="BAAI/bge-small-en-v1.5">BAAI/bge-small-en-v1.5</option>
+                                        <option value="BAAI/bge-large-zh-v1.5">BAAI/bge-large-zh-v1.5</option>
                                         <option value="BAAI/bge-base-zh-v1.5">BAAI/bge-base-zh-v1.5</option>
                                         <option value="BAAI/bge-small-zh-v1.5">BAAI/bge-small-zh-v1.5</option>
-                                        <option value="BAAI/bge-large-zh-v1.5">BAAI/bge-large-zh-v1.5</option>
-                                        <option value="BAAI/bge-m3">BAAI/bge-m3</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -556,6 +562,9 @@ AntSK 生态为企业提供端到端大模型能力</textarea>
                                 <div class="form-group">
                                     <label for="rerank-model">选择模型</label>
                                     <select id="rerank-model" class="form-select">
+                                        <option value="BAAI/bge-reranker-v2.5-gemma2-lightweight">BAAI/bge-reranker-v2.5-gemma2-lightweight</option>
+                                        <option value="BAAI/bge-reranker-v2-gemma">BAAI/bge-reranker-v2-gemma</option>
+                                        <option value="BAAI/bge-reranker-v2-minicpm-layerwise">BAAI/bge-reranker-v2-minicpm-layerwise</option>
                                         <option value="BAAI/bge-reranker-v2-m3">BAAI/bge-reranker-v2-m3</option>
                                         <option value="BAAI/bge-reranker-base">BAAI/bge-reranker-base</option>
                                         <option value="BAAI/bge-reranker-large">BAAI/bge-reranker-large</option>
@@ -593,38 +602,68 @@ AntSK 生态为企业提供端到端大模型能力</textarea>
                 <h2>🤖 支持的模型</h2>
                 
                 <h3 style="margin-top: 30px; color: #4a5568;">Embedding模型</h3>
+                <p style="color: var(--text-light); margin-bottom: 1rem;">全面支持FlagEmbedding最新官方模型，覆盖多语言、多模态与大模型检索场景。</p>
                 <div class="model-grid">
                     <div class="model-card">
+                        <h4>BAAI/bge-m3</h4>
+                        <p>多功能、多语言、多粒度检索模型，支持8192 token长文本。</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>BAAI/bge-en-icl</h4>
+                        <p>具备少样本学习能力的英文模型，强化复杂查询表达。</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>BAAI/bge-multilingual-gemma2</h4>
+                        <p>基于Gemma2的多语言LLM级向量模型，适配全球场景。</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>BAAI/llm-embedder</h4>
+                        <p>面向大模型RAG的统一向量模型，覆盖多种检索增强需求。</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>BAAI/bge-large-en-v1.5</h4>
+                        <p>英文旗舰模型，具有更平滑的相似度分布。</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>BAAI/bge-base-en-v1.5</h4>
+                        <p>英文基础模型，兼顾性能与部署成本。</p>
+                    </div>
+                    <div class="model-card">
                         <h4>BAAI/bge-large-zh-v1.5</h4>
-                        <p>中文大型模型（推荐）</p>
+                        <p>中文旗舰模型，适合企业级中文知识库检索。</p>
                     </div>
                     <div class="model-card">
                         <h4>BAAI/bge-base-zh-v1.5</h4>
-                        <p>中文基础模型</p>
-                    </div>
-                    <div class="model-card">
-                        <h4>BAAI/bge-small-zh-v1.5</h4>
-                        <p>中文小型模型</p>
-                    </div>
-                    <div class="model-card">
-                        <h4>BAAI/bge-m3</h4>
-                        <p>多语言模型</p>
+                        <p>中文通用模型，支持高质量向量生成。</p>
                     </div>
                 </div>
 
                 <h3 style="margin-top: 30px; color: #4a5568;">Rerank模型</h3>
+                <p style="color: var(--text-light); margin-bottom: 1rem;">提供轻量高效到大型精确的多层级交叉编码器，满足不同精度与性能需求。</p>
                 <div class="model-grid">
                     <div class="model-card">
-                        <h4>BAAI/bge-reranker-v2-m3</h4>
-                        <p>多语言重排序模型（推荐）</p>
+                        <h4>BAAI/bge-reranker-v2.5-gemma2-lightweight</h4>
+                        <p>Gemma2轻量版，多语言支持且可配置压缩策略。</p>
                     </div>
                     <div class="model-card">
-                        <h4>BAAI/bge-reranker-base</h4>
-                        <p>基础重排序模型</p>
+                        <h4>BAAI/bge-reranker-v2-gemma</h4>
+                        <p>基于Gemma的跨语言重排模型，兼顾性能与覆盖面。</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>BAAI/bge-reranker-v2-minicpm-layerwise</h4>
+                        <p>支持按层输出以加速推理的多语言模型。</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>BAAI/bge-reranker-v2-m3</h4>
+                        <p>官方推荐多语言重排序模型，部署便捷推理快速。</p>
                     </div>
                     <div class="model-card">
                         <h4>BAAI/bge-reranker-large</h4>
-                        <p>大型重排序模型</p>
+                        <p>高精度中英模型，用于要求最优结果的场景。</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>BAAI/bge-reranker-base</h4>
+                        <p>中英通用模型，兼顾效果与资源消耗。</p>
                     </div>
                 </div>
             </div>
