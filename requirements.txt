@@ -3,7 +3,7 @@ uvicorn[standard]==0.24.0
 pydantic==2.5.0
 numpy==1.24.3
 pyarrow==14.0.1
-datasets==2.14.0
+datasets>=2.8.0,<2.14.0
 FlagEmbedding==1.2.10
 modelscope==1.9.5
 torch>=1.13.0
