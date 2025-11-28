@@ -2,10 +2,10 @@ fastapi==0.104.1
 uvicorn[standard]==0.24.0
 pydantic==2.5.0
 numpy==1.24.3
+pyarrow==14.0.1
+datasets==2.14.0
 FlagEmbedding==1.2.10
 modelscope==1.9.5
 torch>=1.13.0
 transformers>=4.21.0
-requests==2.31.0
-pyarrow>=12.0.0,<15.0.0
-datasets>=2.14.0,<3.0.0 
+requests==2.31.0 
