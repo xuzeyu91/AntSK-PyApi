@@ -101,17 +101,18 @@
         .cta-button {
             background: var(--primary-gradient);
             color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
+            padding: 0.75rem 1.75rem;
+            border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            letter-spacing: 0.5px;
         }
 
         .cta-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
         }
 
         /* 主要内容区域 */
@@ -336,25 +337,27 @@
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
         }
 
         .form-group label {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
             color: var(--text-color);
+            margin-left: 0.25rem;
         }
 
         .form-input,
         .form-textarea,
         .form-select {
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
+            padding: 0.875rem 1.25rem;
+            border-radius: 12px;
             border: 1px solid var(--border);
-            background: #ffffff;
+            background: #f8f9fa;
             font-size: 0.95rem;
             color: var(--text-color);
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.2s ease;
         }
 
         .form-input:focus,
@@ -376,13 +379,14 @@
         }
 
         .form-checkbox {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             gap: 0.5rem;
             font-size: 0.9rem;
             color: var(--text-light);
             cursor: pointer;
             user-select: none;
+            margin: 0.5rem 0;
         }
 
         .form-checkbox input {
@@ -395,17 +399,20 @@
             background: var(--primary-gradient);
             color: #ffffff;
             border: none;
-            border-radius: 999px;
-            padding: 0.75rem 1.75rem;
+            border-radius: 50px;
+            padding: 0.75rem 2rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            letter-spacing: 0.5px;
+            font-size: 1rem;
+            margin-top: 1rem;
         }
 
         .run-button:hover:not([disabled]) {
             transform: translateY(-2px);
-            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.25);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
         }
 
         .run-button[disabled] {
@@ -419,11 +426,122 @@
             color: #e2e8f0;
             font-family: 'Fira Code', 'Courier New', monospace;
             border-radius: 12px;
-            padding: 1rem;
+            padding: 1.25rem;
             max-height: 240px;
             overflow-y: auto;
             white-space: pre-wrap;
             word-break: break-word;
+            line-height: 1.5;
+            font-size: 0.9rem;
+            border: 1px solid #1e293b;
+            margin-top: 1.5rem;
+        }
+
+        /* 关于部分按钮样式 */
+        .about-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .about-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .about-btn.primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .about-btn.dark {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: white;
+            box-shadow: 0 10px 25px rgba(26, 32, 44, 0.4);
+        }
+
+        .about-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        /* 更多优化样式 */
+        .section-subtitle {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .subsection-title {
+            margin-top: 2.5rem;
+            margin-bottom: 0.75rem;
+            color: #4a5568;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .subsection-desc {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            margin-top: 3rem;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(72, 187, 120, 0.2);
+        }
+
+        .highlight-box h3 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .highlight-box p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .highlight-tags {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .highlight-tag {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.2s ease;
+        }
+        
+        .highlight-tag:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.25);
         }
 
         /* 响应式设计 */
@@ -494,7 +612,7 @@
             <!-- 核心功能特色 -->
             <div class="card">
                 <h2>🚀 核心功能特色</h2>
-                <p style="color: var(--text-light); margin-bottom: 2rem;">强大的文本嵌入向量生成和文档重排序能力，为AI应用提供高性能支持</p>
+                <p class="section-subtitle">强大的文本嵌入向量生成和文档重排序能力，为AI应用提供高性能支持</p>
                 
                 <div class="features-grid">
                     <div class="feature-card">
@@ -601,8 +719,8 @@ AntSK 生态为企业提供端到端大模型能力</textarea>
             <div class="card">
                 <h2>🤖 支持的模型</h2>
                 
-                <h3 style="margin-top: 30px; color: #4a5568;">Embedding模型</h3>
-                <p style="color: var(--text-light); margin-bottom: 1rem;">全面支持FlagEmbedding最新官方模型，覆盖多语言、多模态与大模型检索场景。</p>
+                <h3 class="subsection-title">Embedding模型</h3>
+                <p class="subsection-desc">全面支持FlagEmbedding最新官方模型，覆盖多语言、多模态与大模型检索场景。</p>
                 <div class="model-grid">
                     <div class="model-card">
                         <h4>BAAI/bge-m3</h4>
@@ -638,8 +756,8 @@ AntSK 生态为企业提供端到端大模型能力</textarea>
                     </div>
                 </div>
 
-                <h3 style="margin-top: 30px; color: #4a5568;">Rerank模型</h3>
-                <p style="color: var(--text-light); margin-bottom: 1rem;">提供轻量高效到大型精确的多层级交叉编码器，满足不同精度与性能需求。</p>
+                <h3 class="subsection-title">Rerank模型</h3>
+                <p class="subsection-desc">提供轻量高效到大型精确的多层级交叉编码器，满足不同精度与性能需求。</p>
                 <div class="model-grid">
                     <div class="model-card">
                         <h4>BAAI/bge-reranker-v2.5-gemma2-lightweight</h4>
@@ -712,12 +830,12 @@ AntSK 生态为企业提供端到端大模型能力</textarea>
             <!-- 关于 AntSK -->
             <div class="card">
                 <h2>🏢 关于 AntSK</h2>
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <a href="https://antsk.cn" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 30px; border-radius: 25px; text-decoration: none; font-size: 1.2rem; font-weight: bold; margin: 10px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                        🌐 访问 AntSK 官网
+                <div class="about-actions">
+                    <a href="https://antsk.cn" target="_blank" class="about-btn primary">
+                        <span>🌐</span> 访问 AntSK 官网
                     </a>
-                    <a href="https://github.com/xuzeyu91/AntSK-PyApi" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #24292e 0%, #1a1e22 100%); color: white; padding: 15px 30px; border-radius: 25px; text-decoration: none; font-size: 1.2rem; font-weight: bold; margin: 10px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                        ⭐ GitHub 源码
+                    <a href="https://github.com/xuzeyu91/AntSK-PyApi" target="_blank" class="about-btn dark">
+                        <span>⭐</span> GitHub 源码
                     </a>
                 </div>
                 
@@ -740,14 +858,14 @@ AntSK 生态为企业提供端到端大模型能力</textarea>
                     </div>
                 </div>
                 
-                <div style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; padding: 25px; border-radius: 15px; margin-top: 30px; text-align: center;">
-                    <h3 style="color: white; margin-bottom: 15px;">🎯 为什么选择 AntSK？</h3>
-                    <p style="font-size: 1.1rem; margin-bottom: 20px;">本 PyAPI 项目是 AntSK 生态系统的重要组成部分，专门为 AntSK 主平台提供高性能的文本嵌入向量生成和文档重排序服务。</p>
-                    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-top: 20px;">
-                        <div style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 20px;">✅ 开源免费</div>
-                        <div style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 20px;">🔒 数据安全</div>
-                        <div style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 20px;">🚀 高性能</div>
-                        <div style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 20px;">🛠️ 易部署</div>
+                <div class="highlight-box">
+                    <h3>🎯 为什么选择 AntSK？</h3>
+                    <p>本 PyAPI 项目是 AntSK 生态系统的重要组成部分，专门为 AntSK 主平台提供高性能的文本嵌入向量生成和文档重排序服务。</p>
+                    <div class="highlight-tags">
+                        <div class="highlight-tag">✅ 开源免费</div>
+                        <div class="highlight-tag">🔒 数据安全</div>
+                        <div class="highlight-tag">🚀 高性能</div>
+                        <div class="highlight-tag">🛠️ 易部署</div>
                     </div>
                 </div>
             </div>
