@@ -364,6 +364,8 @@ async def create_rerank(request: RerankRequest):
         raise HTTPException(status_code=500, detail=f"重排序失败: {str(e)}")
 
 @app.get("/", response_class=HTMLResponse)
+@app.get("/index", response_class=HTMLResponse)
+@app.get("/index.html", response_class=HTMLResponse)
 async def root():
     """根路径 - 返回可视化页面"""
     try:
@@ -376,6 +378,7 @@ async def root():
             status_code=200
         )
 
+@app.get("/features", response_class=HTMLResponse)
 @app.get("/features.html", response_class=HTMLResponse)
 async def features():
     """功能介绍页面"""
