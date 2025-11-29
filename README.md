@@ -384,6 +384,48 @@ docker-compose down
 docker-compose restart
 ```
 
+#### 方法三：直接拉取并运行已发布镜像（GPU）
+
+> 说明：需已安装 NVIDIA Container Toolkit；以下命令将绑定 GPU 编号为 1，并挂载本地 `models` 与 `logs` 目录到容器。
+
+Linux/macOS（Bash）：
+```bash
+docker run -d \
+    --name antsk-py-api \
+    -p 8000:8000 \
+    -e MODEL_STORAGE_PATH=/app/models \
+    -e API_HOST=0.0.0.0 \
+    -e API_PORT=8000 \
+    -e LOG_LEVEL=INFO \
+    -e USE_FP16=true \
+    -e NVIDIA_VISIBLE_DEVICES=1 \
+    -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+    --gpus "device=1" \
+    --restart unless-stopped \
+    -v $(pwd)/models:/app/models \
+    -v $(pwd)/logs:/app/logs \
+    registry.cn-hangzhou.aliyuncs.com/xuzeyu91/antsk-base:antsk-py-api-1.0.3
+```
+
+Windows（PowerShell）：
+```powershell
+docker run -d `
+    --name antsk-py-api `
+    -p 8000:8000 `
+    -e MODEL_STORAGE_PATH=/app/models `
+    -e API_HOST=0.0.0.0 `
+    -e API_PORT=8000 `
+    -e LOG_LEVEL=INFO `
+    -e USE_FP16=true `
+    -e NVIDIA_VISIBLE_DEVICES=1 `
+    -e NVIDIA_DRIVER_CAPABILITIES=compute,utility `
+    --gpus "device=1" `
+    --restart unless-stopped `
+    -v "${PWD}\models:/app/models" `
+    -v "${PWD}\logs:/app/logs" `
+    registry.cn-hangzhou.aliyuncs.com/xuzeyu91/antsk-base:antsk-py-api-1.0.3
+```
+
 ### 🔧 Docker环境变量配置
 
 | 变量名 | 默认值 | 说明 |
